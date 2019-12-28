@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="USE_RELEASE_OPTION" value="false" />
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="news-gateway" />
+        <module name="common-log" />
+        <module name="news-shop" />
+        <module name="tx-manager" />
+        <module name="news-system-api" />
+        <module name="news-eureka" />
+        <module name="common-auth" />
+        <module name="news-configserver" />
+        <module name="news-order-api" />
+        <module name="common-redis" />
+        <module name="news-auth" />
+        <module name="news-shop-api" />
+        <module name="common-core" />
+        <module name="common-mq" />
+        <module name="new-system" />
+        <module name="news-order" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="8" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="common-auth" options="-parameters" />
+      <module name="common-core" options="-parameters" />
+      <module name="common-log" options="-parameters" />
+      <module name="common-mq" options="-parameters" />
+      <module name="common-redis" options="-parameters" />
+      <module name="new-system" options="-parameters" />
+      <module name="news-auth" options="-parameters" />
+      <module name="news-configserver" options="-parameters" />
+      <module name="news-eureka" options="-parameters" />
+      <module name="news-gateway" options="-parameters" />
+      <module name="news-order" options="-parameters" />
+      <module name="news-order-api" options="-parameters" />
+      <module name="news-shop" options="-parameters" />
+      <module name="news-shop-api" options="-parameters" />
+      <module name="news-system-api" options="-parameters" />
+      <module name="tx-manager" options="-parameters" />
+    </option>
+  </component>
+</project>

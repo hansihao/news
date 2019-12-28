@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.nciae.shop.mapper.ShopCartItemMapper">
+  <resultMap id="BaseResultMap" type="edu.nciae.shop.domain.ShopCartItem">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="product_picture" jdbcType="VARCHAR" property="productPicture" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
+    <result column="product_category_id" jdbcType="BIGINT" property="productCategoryId" />
+    <result column="product_brand_id" jdbcType="BIGINT" property="productBrandId" />
+    <result column="product_sn" jdbcType="VARCHAR" property="productSn" />
+    <result column="product_attr" jdbcType="VARCHAR" property="productAttr" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shop_cart_item
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="edu.nciae.shop.domain.ShopCartItem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into shop_cart_item (product_id, user_id, quantity, 
+      price, product_picture, product_name, 
+      create_date, modify_date, delete_status, 
+      product_category_id, product_brand_id, product_sn, 
+      product_attr)
+    values (#{productId,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL}, #{productPicture,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{modifyDate,jdbcType=TIMESTAMP}, #{deleteStatus,jdbcType=INTEGER}, 
+      #{productCategoryId,jdbcType=BIGINT}, #{productBrandId,jdbcType=BIGINT}, #{productSn,jdbcType=VARCHAR}, 
+      #{productAttr,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="edu.nciae.shop.domain.ShopCartItem">
+    update shop_cart_item
+    set product_id = #{productId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=VARCHAR},
+      quantity = #{quantity,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      product_picture = #{productPicture,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      delete_status = #{deleteStatus,jdbcType=INTEGER},
+      product_category_id = #{productCategoryId,jdbcType=BIGINT},
+      product_brand_id = #{productBrandId,jdbcType=BIGINT},
+      product_sn = #{productSn,jdbcType=VARCHAR},
+      product_attr = #{productAttr,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, product_id, user_id, quantity, price, product_picture, product_name, create_date, 
+    modify_date, delete_status, product_category_id, product_brand_id, product_sn, product_attr
+    from shop_cart_item
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, product_id, user_id, quantity, price, product_picture, product_name, create_date, 
+    modify_date, delete_status, product_category_id, product_brand_id, product_sn, product_attr
+    from shop_cart_item
+  </select>
+</mapper>

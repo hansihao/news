@@ -1,0 +1,119 @@
+server:
+  port: 8003
+# 日志配置
+logging:
+  level:
+    com.ruoyi: debug
+    org.springframework: warn
+spring:
+  application:
+    name: order
+  main:
+    allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
+  #配置分布式事务组
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: my_test_tx_group
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:      # 密码（默认为空）
+    timeout: 6000ms  # 连接超时时长（毫秒）
+    lettuce:
+      pool:
+        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: 1000      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10      # 连接池中的最大空闲连接
+        min-idle: 5       # 连接池中的最小空闲连接
+  datasource:
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/news_order?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver
+      db-type: com.alibaba.druid.pool.DruidDataSource
+      max-active: 20
+      initial-size: 3
+      max-wait: 60000
+      min-idle: 1
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: select 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-open-prepared-statements: 20
+      filter:
+        stat:
+          enabled: true
+          # 慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+
+feign:
+  hystrix:
+    enabled: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+      #defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true #以IP地址注册到服务中心
+# MyBatis
+mybatis:
+  # 搜索指定包别名
+  type-aliases-package: edu.nciae.order.domain
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapper-locations:
+    - classpath:edu.nciae.order.mapper./**.xml
+
+mapper:
+  not-empty: true
+  identity: MYSQL
+
+# PageHelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+#============== kafka ===================
+kafka:
+  consumer:
+    zookeeper:
+    connect: 127.0.0.1:2181
+    servers: 127.0.0.1:9092
+    enable:
+      auto:
+        commit: true # 设置自动提交offset
+    session:
+      timeout: 6000
+    auto:
+      commit:
+        interval: 100 # 如果'enable.auto.commit'为true，则消费者偏移自动提交给Kafka的频率（以毫秒为单位），默认值为5000。
+      offset:
+        reset: latest # smallest和largest才有效，如果smallest重新0开始读取，如果是largest从logfile的offset读取。一般情况下我们都是设置smallest
+    topic: order
+    group:
+      id: order # 指定默认消费者group id --> 由于在kafka中，同一组中的consumer不会读取到同一个消息，依靠groud.id设置组名
+    concurrency: 10
+  producer:
+    servers: 127.0.0.1:9092
+    retries: 0 # 写入失败时，重试次数。当leader节点失效，一个repli节点会替代成为leader节点，此时可能出现写入失败，当retris为0时，produce不会重复。retirs重发，此时repli节点完全成为leader节点，不会产生消息丢失。
+    batch:
+      size: 4096 # 每次批量发送消息的数量,produce积累到一定数据，一次发送
+    linger: 1
+    buffer:
+      memory: 40960 #produce积累数据一次发送，缓存大小达到buffer.memory就发送数据

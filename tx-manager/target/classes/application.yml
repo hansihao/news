@@ -1,0 +1,45 @@
+spring:
+  application:
+  name: tx-manager
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/tx-manager?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+  redis:
+    host: 127.0.0.1
+    port: 6379
+server:
+  port: 7970
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+      #defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true #以IP地址注册到服务中心
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+
+tx-lcn:
+  manager:
+    host: 127.0.0.1  # TxManager Host Ip
+    port: 8070  # TxClient连接请求端口
+    heart-time: 15000  # 心跳检测时间(ms)
+    dtx-time: 30000  # 分布式事务执行总时间
+    concurrent-level: 128
+  message:
+    netty:
+      attr-delay-time: 10000  #参数延迟删除时间单位ms
+  # 开启日志
+  logger:
+    enabled: true
+logging:
+  level:
+    com:
+      codingapi: debug

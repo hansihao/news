@@ -1,0 +1,45 @@
+server:
+  port: 8762
+spring:
+  application:
+    name: configserver
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config/
+  rabbitmq:
+    host: 127.0.0.1
+    port:  5672
+    username: guest
+    password: guest
+    connection-timeout: 15000
+    #RabbitMQ的消息确认有两种。
+    #一种是消息发送确认。这种是用来确认生产者将消息发送给交换器，交换器传递给队列的过程中，
+    # 消息是否成功投递。
+    #发送确认分为两步，一是确认是否到达交换器，二是确认是否到达队列。
+    #第二种是消费接收确认。这种是确认消费者是否成功消费了队列中的消息。
+    # 确认消息发送成功，通过实现ConfirmCallBack接口，消息发送到交换器Exchange后触发回调
+    publisher-confirms: true  # 消息确认
+    # 实现ReturnCallback接口，如果消息从交换器发送到对应队列失败时触发
+    # （比如根据发送消息时指定的routingKey找不到队列时会触发）
+    publisher-returns: true
+    template:
+      #在消息没有被路由到合适队列情况下会将消息返还给消息发布者
+      #当mandatory标志位设置为true时，如果exchange根据自身类型和消息routingKey无法找到一个合适的queue存储消息，
+      # 那么broker会调用basic.return方法将消息返还给生产者;当mandatory设置为false时，
+      # 出现上述情况broker会直接将消息丢弃;通俗的讲，mandatory标志告诉broker代理服务器至少将消息route到一个队列中，
+      # 否则就将消息return给发送者;
+      mandatory: true
+
+# 注册中心配置
+eureka:
+  client: #客户端注册进eureka服务列表内
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka
+      #defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true     #访问路径可以显示IP地址

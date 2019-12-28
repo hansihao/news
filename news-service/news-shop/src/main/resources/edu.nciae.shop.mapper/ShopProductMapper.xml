@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.nciae.shop.mapper.ShopProductMapper">
+  <resultMap id="BaseResultMap" type="edu.nciae.shop.domain.ShopProduct">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="brand_id" jdbcType="BIGINT" property="brandId" />
+    <result column="product_category_id" jdbcType="INTEGER" property="productCategoryId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="product_sn" jdbcType="VARCHAR" property="productSn" />
+    <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
+    <result column="publish_status" jdbcType="INTEGER" property="publishStatus" />
+    <result column="sale" jdbcType="INTEGER" property="sale" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="promotion_start_time" jdbcType="TIMESTAMP" property="promotionStartTime" />
+    <result column="promotion_end_time" jdbcType="TIMESTAMP" property="promotionEndTime" />
+    <result column="promotion_per_limit" jdbcType="INTEGER" property="promotionPerLimit" />
+    <association property="shopBrand" column="brand_id" javaType="edu.nciae.shop.domain.ShopBrand" resultMap="brandResult"/>
+    <association property="shopCategory" column="product_category_id" javaType="edu.nciae.shop.domain.ShopCategory" resultMap="categoryResult" />
+  </resultMap>
+
+  <resultMap id="brandResult" type="edu.nciae.shop.domain.ShopBrand">
+    <id property="id" column="bid"></id>
+    <result property="brandName" column="brand_name"></result>
+  </resultMap>
+  <resultMap id="categoryResult" type="edu.nciae.shop.domain.ShopCategory">
+    <id property="id" column="cid"></id>
+    <result property="categoryName" column="category_name"></result>
+  </resultMap>
+
+  <sql id="productVo">
+    select id, brand_id, product_category_id, product_name, picture, product_sn,
+    publish_status, price, description, stock, unit
+    from shop_product
+  </sql>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shop_product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertProduct" parameterType="edu.nciae.shop.domain.ShopProduct">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into shop_product (brand_id, product_category_id, product_name, 
+      picture, product_sn, delete_status, 
+      publish_status, sale, price, 
+      description, stock, unit, 
+      promotion_start_time, promotion_end_time, 
+      promotion_per_limit)
+    values (#{brandId,jdbcType=BIGINT}, #{productCategoryId,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR}, 
+      #{picture,jdbcType=VARCHAR}, #{productSn,jdbcType=VARCHAR}, #{deleteStatus,jdbcType=INTEGER}, 
+      #{publishStatus,jdbcType=INTEGER}, #{sale,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
+      #{description,jdbcType=VARCHAR}, #{stock,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, 
+      #{promotionStartTime,jdbcType=TIMESTAMP}, #{promotionEndTime,jdbcType=TIMESTAMP}, 
+      #{promotionPerLimit,jdbcType=INTEGER})
+  </insert>
+  <insert id="insert" parameterType="edu.nciae.shop.domain.ShopProduct">
+  <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+    SELECT LAST_INSERT_ID()
+  </selectKey>
+  insert into shop_product (
+    <if test="brandId != null">brand_id,</if>
+    <if test="productCategoryId != null">product_category_id,</if>
+    <if test="productName != null and productName != ''">product_name,</if>
+    <if test="picture != null and picture != ''">picture,</if>
+    <if test="productSn != null and productSn != ''">product_sn,</if>
+    <if test="deleteStatus != null">delete_status,</if>
+    <if test="publishStatus != null">publish_status,</if>
+    <if test="sale != null">sale,</if>
+    <if test="price != null">price,</if>
+    <if test="description != null and description != ''">description,</if>
+    <if test="stock != null">stock,</if>
+    <if test="unit != null and unit != ''">unit</if>
+    <if test="promotionStartTime != null and promotionStartTime != ''">promotion_start_time,</if>
+    <if test="promotionEndTime != null and promotionEndTime != ''">promotion_end_time,</if>
+    <if test="promotionPerLimit != null">promotion_per_limit,</if>
+  ) values (
+    <if test="brandId != null">#{brandId},</if>
+    <if test="productCategoryId != null">#{productCategoryId},</if>
+    <if test="productName != null and productName != ''">#{productName},</if>
+    <if test="picture != null and picture != ''">#{picture},</if>
+    <if test="productSn != null and productSn != ''">#{productSn},</if>
+    <if test="deleteStatus != null">#{deleteStatus},</if>
+    <if test="publishStatus != null">#{publishStatus},</if>
+    <if test="sale != null">#{sale},</if>
+    <if test="price != null">#{price},</if>
+    <if test="description != null and description != ''">#{description},</if>
+    <if test="stock != null">#{stock},</if>
+    <if test="unit != null and unit != ''">#{unit}</if>
+    <if test="promotionStartTime != null and promotionStartTime != ''">#{promotionStartTime},</if>
+    <if test="promotionEndTime != null and promotionEndTime != ''">#{promotionEndTime},</if>
+    <if test="promotionPerLimit != null">#{promotionPerLimit},</if>
+  )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="edu.nciae.shop.domain.ShopProduct">
+    update shop_product
+    set brand_id = #{brandId,jdbcType=BIGINT},
+      product_category_id = #{productCategoryId,jdbcType=INTEGER},
+      product_name = #{productName,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=VARCHAR},
+      product_sn = #{productSn,jdbcType=VARCHAR},
+      delete_status = #{deleteStatus,jdbcType=INTEGER},
+      publish_status = #{publishStatus,jdbcType=INTEGER},
+      sale = #{sale,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      description = #{description,jdbcType=VARCHAR},
+      stock = #{stock,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      promotion_start_time = #{promotionStartTime,jdbcType=TIMESTAMP},
+      promotion_end_time = #{promotionEndTime,jdbcType=TIMESTAMP},
+      promotion_per_limit = #{promotionPerLimit,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, brand_id, product_category_id, product_name, picture, product_sn, delete_status, 
+    publish_status, sale, price, description, stock, unit, promotion_start_time, promotion_end_time, 
+    promotion_per_limit
+    from shop_product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, brand_id, product_category_id, product_name, picture, product_sn, delete_status, 
+    publish_status, sale, price, description, stock, unit, promotion_start_time, promotion_end_time, 
+    promotion_per_limit
+    from shop_product
+  </select>
+  <select id="selectProductList" resultMap="BaseResultMap">
+    select s.id, brand_id, product_category_id, product_name, picture, product_sn,
+    publish_status, sale, price, s.description, stock, unit, b.id AS bid, b.brand_name, c.id AS cid, c.category_name
+    from shop_product s
+    LEFT JOIN shop_brand b ON s.brand_id = b.id
+    LEFT JOIN shop_category c on s.product_category_id = c.id
+    where delete_status = 0
+    <if test="productName != null and productName != ''">
+      AND s.product_name like concat('%', #{productName}, '%')
+    </if>
+    <if test="brandId != null">
+      AND s.brand_id = #{brandId}
+    </if>
+    <if test="productCategoryId != null">
+      AND s.product_category_id = #{productCategoryId}
+    </if>
+    <if test="publishStatus != null">
+      AND s.publish_status = #{publishStatus}
+    </if>
+  </select>
+
+  <update id="updateShopProduct" parameterType="edu.nciae.shop.domain.ShopProduct">
+    update shop_product
+    <set>
+      <if test="brandId != null and brandId != 0">brand_id = #{brandId},</if>
+      <if test="productCategoryId != null and productCategoryId != 0">product_category_id = #{productCategoryId},</if>
+      <if test="productName != null and productName != ''">product_name = #{productName},</if>
+      <if test="picture != null and picture != ''">picture = #{picture},</if>
+      <if test="productSn != null and productSn != ''">product_sn = #{productSn},</if>
+      <if test="deleteStatus != null">delete_status = #{deleteStatus},</if>
+      <if test="publishStatus != null">publish_status = #{publishStatus},</if>
+      <if test="sale != null">sale = #{sale},</if>
+      <if test="price != null">price = #{price},</if>
+      <if test="description != null and description != ''">description = #{description},</if>
+      <if test="stock != null">stock = #{stock},</if>
+      <if test="unit != null and unit != ''">unit = #{unit},</if>
+      <if test="promotionStartTime != null">promotion_start_time = #{promotionStartTime},</if>
+      <if test="promotionEndTime != null">promotion_end_time = #{promotionEndTime},</if>
+      <if test="promotionPerLimit != null">promotion_per_limit = #{promotionPerLimit},</if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <delete id="deleteProductByIds" parameterType="Long">
+    update shop_product set delete_status = 1 where id in
+    <foreach collection="array" item="productId" open="(" separator="," close=")">
+      #{productId}
+    </foreach>
+  </delete>
+  <select id="getStockById" parameterType="java.lang.Long" resultType="int">
+    select stock
+    from shop_product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="reduceStock">
+    update shop_product
+    <set>
+      <if test="num != null">stock = stock - #{num},</if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

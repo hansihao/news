@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/news-common/common-auth/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-common/common-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-common/common-log/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-common/common-mq/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-common/common-redis/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-configserver/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-eureka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-service-api/news-order-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-service-api/news-shop-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-service-api/news-system-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-service/new-system/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-service/news-auth/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-service/news-order/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-service/news-shop/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/news-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tx-manager/src/main/java" charset="UTF-8" />
+  </component>
+</project>

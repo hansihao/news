@@ -1,0 +1,10 @@
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: eureka7001.com #eureka服务端的实例名称
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: false
+    fetch-registry: false

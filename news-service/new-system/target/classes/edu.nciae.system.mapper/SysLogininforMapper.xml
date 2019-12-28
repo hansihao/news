@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.nciae.system.mapper.SysLogininforMapper">
+  <resultMap id="BaseResultMap" type="edu.nciae.system.domain.SysLogininfor">
+    <id column="info_id" jdbcType="INTEGER" property="infoId" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="ipaddr" jdbcType="VARCHAR" property="ipaddr" />
+    <result column="login_location" jdbcType="VARCHAR" property="loginLocation" />
+    <result column="browser" jdbcType="VARCHAR" property="browser" />
+    <result column="os" jdbcType="VARCHAR" property="os" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="msg" jdbcType="VARCHAR" property="msg" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_logininfor
+    where info_id = #{infoId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="edu.nciae.system.domain.SysLogininfor">
+    <selectKey keyProperty="infoId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_logininfor (login_name, ipaddr, login_location, 
+      browser, os, status, msg, 
+      login_time)
+    values (#{loginName,jdbcType=VARCHAR}, #{ipaddr,jdbcType=VARCHAR}, #{loginLocation,jdbcType=VARCHAR}, 
+      #{browser,jdbcType=VARCHAR}, #{os,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{msg,jdbcType=VARCHAR}, 
+      #{loginTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="edu.nciae.system.domain.SysLogininfor">
+    update sys_logininfor
+    set login_name = #{loginName,jdbcType=VARCHAR},
+      ipaddr = #{ipaddr,jdbcType=VARCHAR},
+      login_location = #{loginLocation,jdbcType=VARCHAR},
+      browser = #{browser,jdbcType=VARCHAR},
+      os = #{os,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      msg = #{msg,jdbcType=VARCHAR},
+      login_time = #{loginTime,jdbcType=TIMESTAMP}
+    where info_id = #{infoId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select info_id, login_name, ipaddr, login_location, browser, os, status, msg, login_time
+    from sys_logininfor
+    where info_id = #{infoId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select info_id, login_name, ipaddr, login_location, browser, os, status, msg, login_time
+    from sys_logininfor
+  </select>
+  <insert id="insertLogininfor" parameterType="edu.nciae.system.domain.SysLogininfor">
+		insert into sys_logininfor (login_name, status, ipaddr, login_location, browser, os, msg, login_time)
+		values (#{loginName}, #{status}, #{ipaddr}, #{loginLocation}, #{browser}, #{os}, #{msg}, sysdate())
+	</insert>
+
+  <select id="selectLogininforList" parameterType="edu.nciae.system.domain.SysLogininfor" resultMap="BaseResultMap">
+    select info_id,login_name,ipaddr,login_location,browser,os,status,msg,login_time from sys_logininfor
+    <where>
+      <if test="ipaddr != null and ipaddr != ''">
+        AND ipaddr like concat('%', #{ipaddr}, '%')
+      </if>
+      <if test="status != null and status != ''">
+        AND status = #{status}
+      </if>
+      <if test="loginName != null and loginName != ''">
+        AND login_name like concat('%', #{loginName}, '%')
+      </if>
+      <if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
+        and date_format(login_time,'%y%m%d') &gt;= date_format(#{beginTime},'%y%m%d')
+      </if>
+      <if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
+        and date_format(login_time,'%y%m%d') &lt;= date_format(#{endTime},'%y%m%d')
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteLogininforByIds" parameterType="String">
+    delete from sys_logininfor where info_id in
+    <foreach collection="array" item="infoId" open="(" separator="," close=")">
+      #{infoId}
+    </foreach>
+  </delete>
+
+  <update id="cleanLogininfor">
+        truncate table sys_logininfor
+    </update>
+</mapper>
